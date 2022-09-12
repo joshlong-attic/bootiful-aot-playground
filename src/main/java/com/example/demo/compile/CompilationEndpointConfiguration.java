@@ -66,10 +66,15 @@ class CompilationEndpointCodeGenerator {
 
 	static MethodReference generateCompilationEndpoint(GeneratedClasses generatedClasses) {
 		var generatedClass = generatedClasses.getOrAddForFeatureComponent("CompilationEndpoint",
-				CompilationEndpoint.class, builder -> builder.addJavadoc("""
-						this method registers the CompilationEndpoint
-						@author Josh Long
-						""".stripIndent()));
+				CompilationEndpoint.class, builder -> builder //
+						.addModifiers(Modifier.PUBLIC) //
+						.addJavadoc("""
+
+								This method registers {@code CompilationEndpoint}
+
+								@author Josh Long
+
+								""".stripIndent()));
 
 		var generatedMethod = generatedClass //
 				.getMethods()//
@@ -91,8 +96,8 @@ class CompilationEndpointCodeGenerator {
 						  $T.ofEpochMilli($L),
 						  $S
 						)
-						""", CompilationEndpoint.class, "ce", CompilationEndpoint.class, Instant.class,
-						System.currentTimeMillis() + "L", new File(".").getAbsolutePath())
+						""".stripIndent().trim(), CompilationEndpoint.class, "ce", CompilationEndpoint.class,
+						Instant.class, System.currentTimeMillis() + "L", new File(".").getAbsolutePath())
 				.addStatement("return $L", "ce").build();
 	}
 
