@@ -39,7 +39,6 @@ class MyProxyProcessor implements BeanPostProcessor, BeanRegistrationAotProcesso
 			var runtimeHints = context.getRuntimeHints();
 			ProxyUtils.registerHintsForProxy(beanClass, runtimeHints);
 			runtimeHints.reflection().registerType(Ray.class, MemberCategory.values());
-
 			var rayInitGeneratedMethod = code.getMethods().add("rayInit",
 					builder -> builder.addModifiers(Modifier.STATIC).addParameter(RegisteredBean.class, "rb")
 							.addParameter(DefaultGreetingsService.class, "gs").returns(DefaultGreetingsService.class)
