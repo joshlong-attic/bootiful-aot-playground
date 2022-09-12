@@ -8,32 +8,32 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 class WiringConfiguration {
 
-    @Bean
-    static MyBeanFactoryPostProcessor myBeanFactoryPostProcessor() {
-        return new MyBeanFactoryPostProcessor();
-    }
+	@Bean
+	static MyBeanFactoryPostProcessor myBeanFactoryPostProcessor() {
+		return new MyBeanFactoryPostProcessor();
+	}
 
-    @Bean
-    ApplicationListener<ApplicationReadyEvent> eventApplicationListener(GreetingsService greetingsService) {
-        return event -> {
-            greetingsService.english();
-            greetingsService.chinese();
-        };
-    }
+	@Bean
+	ApplicationListener<ApplicationReadyEvent> eventApplicationListener(GreetingsService greetingsService) {
+		return event -> {
+			greetingsService.english();
+			greetingsService.chinese();
+		};
+	}
 
-    @Bean
-    MyProxyProcessor myBeanPostProcessor() {
-        return new MyProxyProcessor();
-    }
+	@Bean
+	MyProxyProcessor myBeanPostProcessor() {
+		return new MyProxyProcessor();
+	}
 
+	@Bean
+	DefaultMessageService messageService() {
+		return new DefaultMessageService();
+	}
 
-    @Bean
-    DefaultMessageService messageService() {
-        return new DefaultMessageService();
-    }
+	@Bean
+	DefaultGreetingsService greetingsService(MessageService messageService) {
+		return new DefaultGreetingsService(messageService);
+	}
 
-    @Bean
-    DefaultGreetingsService greetingsService(MessageService messageService) {
-        return new DefaultGreetingsService(messageService);
-    }
 }

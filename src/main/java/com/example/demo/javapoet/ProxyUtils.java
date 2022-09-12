@@ -12,18 +12,18 @@ import java.util.Arrays;
 
 abstract class ProxyUtils {
 
-    @SneakyThrows
-    public static void registerHintsForProxy(Class<?> beanClass, RuntimeHints hints) {
-        var memberCategories = MemberCategory.values();
-        var interfaces = beanClass.getInterfaces();
-        var reflectionHints = hints.reflection();
-        var listOfInterfaces = new ArrayList<Class<?>>();
-        listOfInterfaces.addAll(Arrays.asList(interfaces));
-        listOfInterfaces.addAll(Arrays.asList(SpringProxy.class, Advised.class, DecoratingProxy.class));
-        reflectionHints.registerType(beanClass, memberCategories);
-        for (var i : interfaces)
-            reflectionHints.registerType(i, memberCategories);
-        hints.proxies().registerJdkProxy(listOfInterfaces.toArray(new Class<?>[0]));
-    }
+	@SneakyThrows
+	public static void registerHintsForProxy(Class<?> beanClass, RuntimeHints hints) {
+		var memberCategories = MemberCategory.values();
+		var interfaces = beanClass.getInterfaces();
+		var reflectionHints = hints.reflection();
+		var listOfInterfaces = new ArrayList<Class<?>>();
+		listOfInterfaces.addAll(Arrays.asList(interfaces));
+		listOfInterfaces.addAll(Arrays.asList(SpringProxy.class, Advised.class, DecoratingProxy.class));
+		reflectionHints.registerType(beanClass, memberCategories);
+		for (var i : interfaces)
+			reflectionHints.registerType(i, memberCategories);
+		hints.proxies().registerJdkProxy(listOfInterfaces.toArray(new Class<?>[0]));
+	}
 
 }
