@@ -47,9 +47,9 @@ class CompilationAotProcessor implements BeanRegistrationAotProcessor {
 
 	@Override
 	public BeanRegistrationAotContribution processAheadOfTime(RegisteredBean registeredBean) {
-		var first = CompilationEndpoint.class.isAssignableFrom(registeredBean.getBeanClass());
-		var second = registeredBean.getBeanClass().isAssignableFrom(CompilationEndpoint.class);
-		var good = first || second;
+		var good = CompilationEndpoint.class.isAssignableFrom(registeredBean.getBeanClass());
+		if (good)
+			log.info("good for " + registeredBean.getBeanClass().getName());
 		if (!good)
 			return null;
 		log.info("looks like you should be good to go...");
@@ -91,7 +91,8 @@ class CompilationEndpointCodeGenerator {
 
 	private static CodeBlock generateMethodCode() {
 		var outputBeanVariableName = "outputBean";
-		return CodeBlock.builder().addStatement("""
+		return CodeBlock.builder() //
+				.addStatement("""
 				$T $L = new $T(
 				  $T.ofEpochMilli($L),
 				  $S
