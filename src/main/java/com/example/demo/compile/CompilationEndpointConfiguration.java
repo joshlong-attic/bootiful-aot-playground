@@ -81,7 +81,7 @@ class CompilationEndpointCodeGenerator {
 				.add("apply",
 						builder -> builder.addModifiers(Modifier.STATIC, Modifier.PUBLIC)
 								.addParameter(RegisteredBean.class, "rb") //
-								.addParameter(CompilationEndpoint.class, "cp") //
+								.addParameter(CompilationEndpoint.class, "inputBean") //
 								.returns(CompilationEndpoint.class) //
 								.addCode(generateMethodCode()) //
 				);
@@ -90,15 +90,16 @@ class CompilationEndpointCodeGenerator {
 	}
 
 	private static CodeBlock generateMethodCode() {
-		return CodeBlock.builder()
-				.addStatement("""
-						$T $L = new $T(
-						  $T.ofEpochMilli($L),
-						  $S
-						)
-						""".stripIndent().trim(), CompilationEndpoint.class, "ce", CompilationEndpoint.class,
-						Instant.class, System.currentTimeMillis() + "L", new File(".").getAbsolutePath())
-				.addStatement("return $L", "ce").build();
+		var outputBeanVariableName = "outputBean";
+		return CodeBlock.builder().addStatement("""
+				$T $L = new $T(
+				  $T.ofEpochMilli($L),
+				  $S
+				)
+				""".stripIndent().trim(), CompilationEndpoint.class, outputBeanVariableName, CompilationEndpoint.class,
+				Instant.class, System.currentTimeMillis() + "L", new File(".").getAbsolutePath())
+				.addStatement("return $L", outputBeanVariableName) //
+				.build();
 	}
 
 }
